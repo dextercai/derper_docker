@@ -1,6 +1,8 @@
 name: Docker Image
 
 on:
+  watch:
+    types: [started]
   push:
     branches: [main]
   schedule:
