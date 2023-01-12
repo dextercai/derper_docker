@@ -42,3 +42,18 @@ Usage of derper:
         verify clients to this DERP server through a local tailscaled instance.
 
 ```
+
+
+# Example Dockerfile
+```
+version: "3.7"
+services:
+  derper:
+    image: dextercai/derper:latest
+    volumes:
+    - ./cert:/app/cert
+    ports:
+    - 443:443
+    - 3478:3478/udp
+    command: ["-certdir /app/cert", "-hostname derp.****.com"]
+```
