@@ -55,5 +55,5 @@ services:
     ports:
     - 443:443
     - 3478:3478/udp
-    command: ["-certdir /app/cert", "-hostname derp.****.com"]
+    command: ["-certdir=/app/cert", "-hostname=derp.****.com"]
 ```
