@@ -8,10 +8,11 @@ on:
   schedule:
     # Runs "every Monday" (see https://crontab.guru)
     - cron: '0 0 * * MON'
+  workflow_dispatch:
+    
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Log in to DockerHub Registry
