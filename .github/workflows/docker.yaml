@@ -32,4 +32,4 @@ jobs:
           push: true
           tags: |
             dextercai/derper:latest
-            dextercai/derper:${{ github.sha }}
+            dextercai/derper:${{ steps.meta.outputs.tags }}
