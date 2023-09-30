@@ -1,0 +1,40 @@
+{{ $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ $fullname }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ $fullname }}
+  replicas: {{ default 1 .Values.replicaCount | int }}
+  template:
+    metadata:
+      labels:
+        app: {{ $fullname }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: dextercai/derper:latest
+        imagePullPolicy: Always
+        args: 
+        - "-certdir=/app/cert"
+        - "-hostname={{ .Values.hostname }}"
+        - "-a=:23478"
+        {{- if .Values.mesh_with }}
+        - "-mesh-psk-file=/app/psk-config/psk.txt"
+        - "-mesh-with={{ .Values.mesh_with }}"
+        {{- end }}
+        ports:
+        - containerPort: 23478
+        - containerPort: 3478
+          protocol: UDP
+        volumeMounts:
+        - name: psk-config-volume
+          mountPath: /app/psk-config
+      volumes:
+        - name: psk-config-volume
+          configMap:
+            name: {{ $fullname }}-psk-config

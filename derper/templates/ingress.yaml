@@ -1,0 +1,33 @@
+{{ $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: {{ $fullname }}
+  labels:
+    app: {{ $fullname }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+    {{- range $key, $value := .Values.ingressAnnotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec: 
+  rules:
+    - host: {{ .Values.hostname }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: 
+              service:
+                name: {{ $fullname }}-derp
+                port:
+                  number: 23478  
+
+  tls:
+  - secretName: derper-web-tls
+    hosts:
+      - {{ .Values.hostname }}
+
+

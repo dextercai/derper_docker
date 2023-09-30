@@ -1,7 +1,26 @@
 # derper_docker
+
 derper_docker
 
+# Helm Charts
 
+Notice: It works well with K3s. SSL cert is managed by cert-manager. You should edit the templates, if K8s is used to replace K3s.
+
+![Helm with ArgoCD](static/helm_argocd.png)
+
+```
+# values.yaml
+hostname: derp.example.com  # Your derper hostname
+replicaCount: 1 # Replica count, Suggest 1
+
+mesh_with: # Mesh with other derper, if empty mesh is disabled
+pskKey: # Mesh PSK key, must be same with other derper, 64 hex string at least
+
+ingressAnnotations: # Ingress annotations
+  cert-manager.io/cluster-issuer: letsencrypt
+  kubernetes.io/ingress.class: traefik
+
+```
 # DERP HELP
 
 ```
@@ -43,8 +62,8 @@ Usage of derper:
 
 ```
 
-
 # Example Dockerfile
+
 ```
 version: "3.7"
 services:

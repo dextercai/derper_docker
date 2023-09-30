@@ -1,0 +1,9 @@
+hostname: derp.example.com 
+replicaCount: 1
+
+mesh_with: 
+pskKey: 
+
+ingressAnnotations:
+  cert-manager.io/cluster-issuer: letsencrypt
+  kubernetes.io/ingress.class: traefik

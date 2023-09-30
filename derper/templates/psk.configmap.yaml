@@ -1,0 +1,7 @@
+{{ $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ $fullname }}-psk-config
+data: 
+  psk.txt: {{ .Values.pskKey | trim }}
